@@ -4,51 +4,56 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [HideInInspector] public bool jump = false;
+    public float speed = 5f;
+    public float jumpingPower = 10f;
+    //public bool facingRight = true;
 
-    public float moveForce = 365f;
-    public float maxSpeed = 5f;
-    public float jumpForce = 100f;
-    public Transform groundCheck;
-
-    private bool grounded = false;
-    private Rigidbody2D rb2d;
+    private float horizontal;
+    [SerializeField] private Rigidbody2D rb2d;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLayer;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
-        rb2d = GetComponent<Rigidbody2D>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
-
-        if (Input.GetButtonDown("Jump") && grounded)
+        horizontal = Input.GetAxis("Horizontal");
+        if (Input.GetButtonDown("Jump") && isGrounded())
         {
-            jump = true;
+            rb2d.velocity = new Vector2(rb2d.velocity.x, jumpingPower);
         }
+        if (Input.GetButtonUp("Jump") && rb2d.velocity.y > 0)
+        {
+            rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y * 0.5f);
+        }
+
+        //Flip();
     }
 
     void FixedUpdate()
     {
-        float h = Input.GetAxis("Horizontal"); //get the current input of h
-
-        if (h * rb2d.velocity.x < maxSpeed) //if the character is already at max speed
-        {
-            rb2d.AddForce(Vector2.right * h * moveForce); //add horizontal force to the player
-        }
-
-        if (Mathf.Abs(rb2d.velocity.x) > maxSpeed) //if player not at the max speed
-        {
-            rb2d.velocity = new Vector2(Mathf.Sign(rb2d.velocity.x) * maxSpeed, rb2d.velocity.y); //add horizontal force to player
-        }
-
-        if (jump)
-        {
-            rb2d.AddForce(new Vector2(0f, jumpForce)); //adds force on the y axis
-            jump = false; //sets jump to false to prevent double jumps
-        }
+        rb2d.velocity = new Vector2(horizontal * speed, rb2d.velocity.y);
     }
+
+    private bool isGrounded()
+    {
+        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+    }
+
+    //private void Flip()
+    //{
+    //    if (rb2d.velocity.x > 0f)
+    //    {
+    //        transform.localScale = Vector3.right;
+    //    }
+    //    else
+    //    {
+    //        transform.localScale = Vector3.left;
+    //    }
+    //}
 }
