@@ -12,7 +12,7 @@ public class RoomManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentLevel = levels[0];
     }
 
     // Update is called once per frame
