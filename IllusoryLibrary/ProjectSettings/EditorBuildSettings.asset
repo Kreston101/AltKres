@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/TestCenterRoom.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Scenes/StartRoom.unity
+    guid: c499e6182e00c514f926d190e46f9950
+  - enabled: 1
     path: Assets/Scenes/TestLeftRoom.unity
-    guid: 2499c9a788e447f4fb9c73c07c17c69b
+    guid: 1e8d2a8026e2bd74db0b3a3a72e3aee2
   m_configObjects: {}
