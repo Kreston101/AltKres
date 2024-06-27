@@ -1,7 +1,9 @@
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -27,6 +29,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dashSpeed;
     [SerializeField] private float dashTime;
     [SerializeField] private float dashCooldown;
+
+    [SerializeField] private float damage;
+    [SerializeField] private Transform front, above, below;
+    [SerializeField] private Vector3 FrontArea, AboveArea, BelowArea;
 
     private float gravity;
 
@@ -62,6 +68,7 @@ public class PlayerController : MonoBehaviour
             Move();
             Jump();
         }
+        MeleeAtk();
     }
 
     private void GetInputs()
@@ -163,5 +170,33 @@ public class PlayerController : MonoBehaviour
         {
             jumpBufferCount--;
         }
+    }
+
+    private void MeleeAtk()
+    {
+        Collider2D[] collisions;
+        if (Input.GetKeyDown(KeyCode.X) && Input.GetAxis("Vertical") == 0)
+        {
+            collisions = Physics2D.OverlapBoxAll(front.position, FrontArea, 0);
+        }
+        else if (Input.GetKeyDown(KeyCode.X) && Input.GetAxis("Vertical") > 0)
+        {
+            collisions = Physics2D.OverlapBoxAll(above.position, AboveArea, 0);
+        }
+        else if (Input.GetKeyDown(KeyCode.X) && Input.GetAxis("Vertical") < 0 && isGrounded())
+        {
+            collisions = Physics2D.OverlapBoxAll(front.position, FrontArea, 0);
+        }
+        else if (Input.GetKeyDown(KeyCode.X) && Input.GetAxis("Vertical") < 0 && !isGrounded())
+        {
+            collisions = Physics2D.OverlapBoxAll(below.position, BelowArea, 0);
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(front.position, FrontArea);
+        Gizmos.DrawWireCube(above.position, AboveArea);
+        Gizmos.DrawWireCube(below.position, BelowArea);
     }
 }
