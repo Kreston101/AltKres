@@ -6,12 +6,30 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/TestCenterRoom.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
     path: Assets/Scenes/StartRoom.unity
     guid: c499e6182e00c514f926d190e46f9950
   - enabled: 1
-    path: Assets/Scenes/TestLeftRoom.unity
-    guid: 1e8d2a8026e2bd74db0b3a3a72e3aee2
+    path: Assets/Scenes/Hallway.unity
+    guid: 91547f66fe9f9d945ada853254c44fa7
+  - enabled: 1
+    path: Assets/Scenes/StaffArchives.unity
+    guid: 382ca3bd2848b024fa664e07fc2dd87b
+  - enabled: 1
+    path: Assets/Scenes/OfficeHallway.unity
+    guid: 209327fa9f5e16a4ea2e745aa16f57db
+  - enabled: 1
+    path: Assets/Scenes/BreakRoom.unity
+    guid: ea84589af4a128f48887f4b2465561d4
+  - enabled: 1
+    path: Assets/Scenes/FileStorage.unity
+    guid: 5cf8e2c1eb79ed345b4fc7f31c45ae95
+  - enabled: 1
+    path: Assets/Scenes/BossArea1.unity
+    guid: bea8da372a67ca34b868ff599c700a06
+  - enabled: 1
+    path: Assets/Scenes/AdminOffice.unity
+    guid: 48326d2e4cbd3844da4388aa16dc5e5a
+  - enabled: 1
+    path: Assets/Scenes/RequestRoom.unity
+    guid: 0388cb7b6d1c5624bad7b27081bae35e
   m_configObjects: {}
