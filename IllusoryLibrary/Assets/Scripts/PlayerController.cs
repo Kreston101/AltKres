@@ -12,17 +12,21 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb2d;
     [SerializeField] private float speed = 5;
     private float horizontal;
+    private float vertical;
 
     [SerializeField] private float jumpForce = 10;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckY = 0.2f;
     [SerializeField] private float groundCheckX = 0.5f;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] public Vector3 lastGroundedPos;
 
     private float jumpBufferCount = 0;
     [SerializeField] private float jumpBufferFrames;
     private float coyoteTimeCounter = 0;
     [SerializeField] private float coyoteTime;
+    private int extraJumps = 0;
+    [SerializeField] private int maxExtraJumps; 
 
     private bool canDash = true;
     private bool dashed = false;
@@ -30,7 +34,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dashTime;
     [SerializeField] private float dashCooldown;
 
-    [SerializeField] private float damage;
+    [SerializeField] private int damage;
     [SerializeField] private Transform front, above, below;
     [SerializeField] private Vector3 FrontArea, AboveArea, BelowArea;
 
@@ -83,10 +87,11 @@ public class PlayerController : MonoBehaviour
 
     private void StartDash()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !dashed)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !dashed && playerState.unlockedDash)
         {
             StartCoroutine(Dash());
             dashed = true;
+            getLastGroundedPosition();
         }
         if (isGrounded())
         {
@@ -110,9 +115,15 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded()
     {
         if (Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckY, groundLayer)
-            || Physics2D.Raycast(groundCheck.position + new Vector3(groundCheckX,0,0), Vector2.down, groundCheckY, groundLayer)
-            || Physics2D.Raycast(groundCheck.position + new Vector3(groundCheckX, 0, 0), Vector2.down, groundCheckY, groundLayer))
+            || Physics2D.Raycast(groundCheck.position + new Vector3(groundCheckX, 0, 0), Vector2.down, groundCheckY, groundLayer)
+            || Physics2D.Raycast(groundCheck.position - new Vector3(groundCheckX, 0, 0), Vector2.down, groundCheckY, groundLayer))
         {
+            if (Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckY, groundLayer)
+            && Physics2D.Raycast(groundCheck.position + new Vector3(1, 0, 0), Vector2.down, groundCheckY, groundLayer)
+            && Physics2D.Raycast(groundCheck.position - new Vector3(1, 0, 0), Vector2.down, groundCheckY, groundLayer))
+            {
+                getLastGroundedPosition();
+            }
             return true;
         }
         else
@@ -129,6 +140,12 @@ public class PlayerController : MonoBehaviour
             {
                 rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce);
                 playerState.jumping = true;
+            }
+            else if (!isGrounded() && extraJumps < maxExtraJumps && Input.GetButtonDown("Jump") && playerState.unlockedExtraJump)
+            {
+                rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce);
+                playerState.jumping = true;
+                extraJumps++;
             }
         }
         if (Input.GetButtonUp("Jump") && rb2d.velocity.y > 0)
@@ -155,7 +172,8 @@ public class PlayerController : MonoBehaviour
         if (isGrounded())
         {
             playerState.jumping = false;
-            coyoteTimeCounter = coyoteTime; 
+            coyoteTimeCounter = coyoteTime;
+            extraJumps = 0;
         }
         else
         {
@@ -164,6 +182,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
+            getLastGroundedPosition();
             jumpBufferCount = jumpBufferFrames;
         }
         else
@@ -174,23 +193,56 @@ public class PlayerController : MonoBehaviour
 
     private void MeleeAtk()
     {
-        Collider2D[] collisions;
+        Collider2D[] objectsHit;
         if (Input.GetKeyDown(KeyCode.X) && Input.GetAxis("Vertical") == 0)
         {
-            collisions = Physics2D.OverlapBoxAll(front.position, FrontArea, 0);
+            objectsHit = Physics2D.OverlapBoxAll(front.position, FrontArea, 0);
+            foreach (Collider2D objecthit in objectsHit)
+            {
+                if (objecthit.GetComponent<Enemy>() != null)
+                {
+                    objecthit.GetComponent<Enemy>().takeDamage(damage);
+                }
+            }
         }
         else if (Input.GetKeyDown(KeyCode.X) && Input.GetAxis("Vertical") > 0)
         {
-            collisions = Physics2D.OverlapBoxAll(above.position, AboveArea, 0);
+            objectsHit = Physics2D.OverlapBoxAll(above.position, AboveArea, 0);
+            foreach (Collider2D objecthit in objectsHit)
+            {
+                if (objecthit.GetComponent<Enemy>() != null)
+                {
+                    objecthit.GetComponent<Enemy>().takeDamage(damage);
+                }
+            }
         }
         else if (Input.GetKeyDown(KeyCode.X) && Input.GetAxis("Vertical") < 0 && isGrounded())
         {
-            collisions = Physics2D.OverlapBoxAll(front.position, FrontArea, 0);
+            objectsHit = Physics2D.OverlapBoxAll(front.position, FrontArea, 0);
+            foreach (Collider2D objecthit in objectsHit)
+            {
+                if (objecthit.GetComponent<Enemy>() != null)
+                {
+                    objecthit.GetComponent<Enemy>().takeDamage(damage);
+                }
+            }
         }
         else if (Input.GetKeyDown(KeyCode.X) && Input.GetAxis("Vertical") < 0 && !isGrounded())
         {
-            collisions = Physics2D.OverlapBoxAll(below.position, BelowArea, 0);
+            objectsHit = Physics2D.OverlapBoxAll(below.position, BelowArea, 0);
+            foreach (Collider2D objecthit in objectsHit)
+            {
+                if (objecthit.GetComponent<Enemy>() != null)
+                {
+                    objecthit.GetComponent<Enemy>().takeDamage(damage);
+                }
+            }
         }
+    }
+
+    void getLastGroundedPosition()
+    {
+        lastGroundedPos = transform.position;
     }
 
     private void OnDrawGizmos()
@@ -198,5 +250,14 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireCube(front.position, FrontArea);
         Gizmos.DrawWireCube(above.position, AboveArea);
         Gizmos.DrawWireCube(below.position, BelowArea);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == 4)
+        {
+            transform.position = lastGroundedPos;
+            Debug.Log(lastGroundedPos);
+        }
     }
 }
