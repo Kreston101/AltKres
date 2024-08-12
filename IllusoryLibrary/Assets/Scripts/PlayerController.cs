@@ -38,6 +38,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform front, above, below;
     [SerializeField] private Vector3 FrontArea, AboveArea, BelowArea;
 
+    [SerializeField] private int bulletCount = 3;
+    [SerializeField] private int maxBullets = 9;
+    [SerializeField] private GameObject bulletFab;
+
     private float gravity;
 
     public static PlayerController Instance { get; set; }
@@ -73,6 +77,7 @@ public class PlayerController : MonoBehaviour
             Jump();
         }
         MeleeAtk();
+        RangedAttack();
     }
 
     private void GetInputs()
@@ -201,7 +206,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (objecthit.GetComponent<Enemy>() != null)
                 {
-                    objecthit.GetComponent<Enemy>().takeDamage(damage);
+                    objecthit.GetComponent<Enemy>().TakeDamage(damage);
                 }
             }
         }
@@ -212,7 +217,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (objecthit.GetComponent<Enemy>() != null)
                 {
-                    objecthit.GetComponent<Enemy>().takeDamage(damage);
+                    objecthit.GetComponent<Enemy>().TakeDamage(damage);
                 }
             }
         }
@@ -223,21 +228,39 @@ public class PlayerController : MonoBehaviour
             {
                 if (objecthit.GetComponent<Enemy>() != null)
                 {
-                    objecthit.GetComponent<Enemy>().takeDamage(damage);
+                    objecthit.GetComponent<Enemy>().TakeDamage(damage);
                 }
             }
         }
         else if (Input.GetKeyDown(KeyCode.X) && Input.GetAxis("Vertical") < 0 && !isGrounded())
         {
             objectsHit = Physics2D.OverlapBoxAll(below.position, BelowArea, 0);
-            foreach (Collider2D objecthit in objectsHit)
+            foreach (Collider2D objectHit in objectsHit)
             {
-                if (objecthit.GetComponent<Enemy>() != null)
+                if (objectHit.GetComponent<Enemy>() != null)
                 {
-                    objecthit.GetComponent<Enemy>().takeDamage(damage);
+                    objectHit.GetComponent<Enemy>().TakeDamage(damage);
                 }
             }
         }
+    }
+
+    private void RangedAttack()
+    {
+        if (Input.GetKeyDown(KeyCode.Z) && bulletCount > 0)
+        {
+            GameObject holder = Instantiate(bulletFab, transform.position, Quaternion.identity);
+            holder.GetComponent<Bullet>().direction = transform.localScale.x;
+            holder.GetComponent<Bullet>().damage = damage * 3;
+            bulletCount--;
+        }
+        //spawn bullet
+        //set dmg = 3? * base
+        //collect collider info
+        //despawn the bullet
+        //-1 from bullets
+        //deal the damage
+        //profit
     }
 
     void getLastGroundedPosition()

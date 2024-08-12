@@ -253,9 +253,9 @@ MonoBehaviour:
   FrontArea: {x: 1, y: 1, z: 0}
   AboveArea: {x: 1, y: 1, z: 0}
   BelowArea: {x: 1, y: 1, z: 0}
-  attackLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  bulletCount: 3
+  maxBullets: 9
+  bulletFab: {fileID: 6908635400841522327, guid: 8640098ef71c23649a1986366fa35530, type: 3}
 --- !u!1 &1981485911288032089
 GameObject:
   m_ObjectHideFlags: 0
