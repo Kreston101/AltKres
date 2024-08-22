@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb2d;
     [SerializeField] private float speed = 5;
     private float horizontal;
-    private float vertical;
 
     [SerializeField] private float jumpForce = 10;
     [SerializeField] private Transform groundCheck;
@@ -41,6 +40,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int bulletCount = 3;
     [SerializeField] private int maxBullets = 9;
     [SerializeField] private GameObject bulletFab;
+
+    public int health = 9;
+    public int maxHealth = 9;
 
     private float gravity;
 
@@ -71,7 +73,7 @@ public class PlayerController : MonoBehaviour
         UpdateJump();
         Flip();
         StartDash();
-        if(!playerState.dashing)
+        if(!playerState.dashing && !playerState.damaged)
         {
             Move();
             Jump();
@@ -254,13 +256,18 @@ public class PlayerController : MonoBehaviour
             holder.GetComponent<Bullet>().damage = damage * 3;
             bulletCount--;
         }
-        //spawn bullet
-        //set dmg = 3? * base
-        //collect collider info
-        //despawn the bullet
-        //-1 from bullets
-        //deal the damage
-        //profit
+    }
+
+    public IEnumerator TakeDamage(int damage)
+    {
+        //tookDamage = true;
+        playerState.damaged = true;
+        rb2d.gravityScale = 0;
+        rb2d.velocity = new Vector2(transform.localScale.x * 5 * -1, 0);
+        yield return new WaitForSeconds(0.25f);
+        rb2d.gravityScale = gravity;
+        playerState.damaged = false;
+        //tookDamage = false;
     }
 
     void getLastGroundedPosition()

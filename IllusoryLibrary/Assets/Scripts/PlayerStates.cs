@@ -6,6 +6,7 @@ public class PlayerStates : MonoBehaviour
 {
     public bool jumping = false;
     public bool dashing = false;
+    public bool damaged = false;
 
     public bool unlockedDash = false;
     public bool unlockedExtraJump = false;

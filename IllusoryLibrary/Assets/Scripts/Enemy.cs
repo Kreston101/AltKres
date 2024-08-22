@@ -5,11 +5,12 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public int health = 5;
+    public int damage = 1;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -24,5 +25,15 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("something entered");
+        if (collision.gameObject == PlayerController.Instance.gameObject)
+        {
+            Debug.Log("player entered");
+            PlayerController.Instance.StartCoroutine("TakeDamage", damage);
+        }
     }
 }
