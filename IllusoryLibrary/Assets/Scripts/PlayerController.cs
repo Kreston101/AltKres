@@ -98,7 +98,7 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(Dash());
             dashed = true;
-            getLastGroundedPosition();
+            GetLastGroundedPosition();
         }
         if (isGrounded())
         {
@@ -129,7 +129,7 @@ public class PlayerController : MonoBehaviour
             && Physics2D.Raycast(groundCheck.position + new Vector3(1, 0, 0), Vector2.down, groundCheckY, groundLayer)
             && Physics2D.Raycast(groundCheck.position - new Vector3(1, 0, 0), Vector2.down, groundCheckY, groundLayer))
             {
-                getLastGroundedPosition();
+                GetLastGroundedPosition();
             }
             return true;
         }
@@ -189,7 +189,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            getLastGroundedPosition();
+            GetLastGroundedPosition();
             jumpBufferCount = jumpBufferFrames;
         }
         else
@@ -263,14 +263,14 @@ public class PlayerController : MonoBehaviour
         //tookDamage = true;
         playerState.damaged = true;
         rb2d.gravityScale = 0;
-        rb2d.velocity = new Vector2(transform.localScale.x * 5 * -1, 0);
+        rb2d.velocity = new Vector2(transform.localScale.x * 15 * -1, 0);
         yield return new WaitForSeconds(0.25f);
         rb2d.gravityScale = gravity;
         playerState.damaged = false;
         //tookDamage = false;
     }
 
-    void getLastGroundedPosition()
+    private void GetLastGroundedPosition()
     {
         lastGroundedPos = transform.position;
     }
