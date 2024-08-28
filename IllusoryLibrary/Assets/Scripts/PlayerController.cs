@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb2d;
     [SerializeField] private float speed = 5;
     private float horizontal;
+    private float vertical;
 
     [SerializeField] private float jumpForce = 10;
     [SerializeField] private Transform groundCheck;
@@ -25,7 +26,7 @@ public class PlayerController : MonoBehaviour
     private float coyoteTimeCounter = 0;
     [SerializeField] private float coyoteTime;
     private int extraJumps = 0;
-    [SerializeField] private int maxExtraJumps; 
+    [SerializeField] private int maxExtraJumps;
 
     private bool canDash = true;
     private bool dashed = false;
@@ -33,9 +34,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float dashTime;
     [SerializeField] private float dashCooldown;
 
+    private bool attacking;
+    [SerializeField] private float attackCooldown;
+    private float attackCDTimer;
     [SerializeField] private int damage;
     [SerializeField] private Transform front, above, below;
     [SerializeField] private Vector3 FrontArea, AboveArea, BelowArea;
+    [SerializeField] private LayerMask attackableLayer;
 
     [SerializeField] private int bulletCount = 3;
     [SerializeField] private int maxBullets = 9;
@@ -50,7 +55,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance != null && Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
         }
@@ -73,7 +78,7 @@ public class PlayerController : MonoBehaviour
         UpdateJump();
         Flip();
         StartDash();
-        if(!playerState.dashing && !playerState.damaged)
+        if (!playerState.dashing && !playerState.damaged)
         {
             Move();
             Jump();
@@ -85,6 +90,8 @@ public class PlayerController : MonoBehaviour
     private void GetInputs()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
+        vertical = Input.GetAxisRaw("Vertical");
+        attacking = Input.GetKeyDown(KeyCode.X);
     }
 
     private void Move()
@@ -164,11 +171,11 @@ public class PlayerController : MonoBehaviour
 
     private void Flip()
     {
-        if(horizontal > 0)
+        if (horizontal > 0)
         {
             transform.localScale = new Vector2(1, transform.localScale.y);
         }
-        else if(horizontal < 0)
+        else if (horizontal < 0)
         {
             transform.localScale = new Vector2(-1, transform.localScale.y);
         }
@@ -200,49 +207,40 @@ public class PlayerController : MonoBehaviour
 
     private void MeleeAtk()
     {
-        Collider2D[] objectsHit;
-        if (Input.GetKeyDown(KeyCode.X) && Input.GetAxis("Vertical") == 0)
+        attackCDTimer += Time.deltaTime;
+        if (attacking && attackCDTimer >= attackCooldown)
         {
-            objectsHit = Physics2D.OverlapBoxAll(front.position, FrontArea, 0);
-            foreach (Collider2D objecthit in objectsHit)
+            attackCDTimer = 0;
+            if (vertical == 0 || vertical < 0 && isGrounded())
             {
-                if (objecthit.GetComponent<Enemy>() != null)
-                {
-                    objecthit.GetComponent<Enemy>().TakeDamage(damage);
-                }
+                Hit(front, FrontArea);
+            }
+            else if (vertical > 0)
+            {
+                Hit(above, AboveArea);
+            }
+            else if (vertical < 0 && !isGrounded())
+            {
+                Hit(below, BelowArea);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.X) && Input.GetAxis("Vertical") > 0)
+    }
+
+    private void Hit(Transform attackTransform, Vector2 attackArea)
+    {
+        Collider2D[] objectsHit = Physics2D.OverlapBoxAll(attackTransform.position, attackArea, 0, attackableLayer);
+
+        foreach(Collider2D objectHit in objectsHit)
         {
-            objectsHit = Physics2D.OverlapBoxAll(above.position, AboveArea, 0);
-            foreach (Collider2D objecthit in objectsHit)
+            if (objectHit.CompareTag("Enemy"))
             {
-                if (objecthit.GetComponent<Enemy>() != null)
-                {
-                    objecthit.GetComponent<Enemy>().TakeDamage(damage);
-                }
+                Debug.Log(objectHit.name);
+                objectHit.GetComponent<Enemy>().StartCoroutine("TakeDamage", damage);
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.X) && Input.GetAxis("Vertical") < 0 && isGrounded())
-        {
-            objectsHit = Physics2D.OverlapBoxAll(front.position, FrontArea, 0);
-            foreach (Collider2D objecthit in objectsHit)
+            else if (objectHit.CompareTag("Breakable"))
             {
-                if (objecthit.GetComponent<Enemy>() != null)
-                {
-                    objecthit.GetComponent<Enemy>().TakeDamage(damage);
-                }
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.X) && Input.GetAxis("Vertical") < 0 && !isGrounded())
-        {
-            objectsHit = Physics2D.OverlapBoxAll(below.position, BelowArea, 0);
-            foreach (Collider2D objectHit in objectsHit)
-            {
-                if (objectHit.GetComponent<Enemy>() != null)
-                {
-                    objectHit.GetComponent<Enemy>().TakeDamage(damage);
-                }
+                Debug.Log(objectHit.name);
+                objectHit.GetComponent<BreakableObject>().TakeDamage(damage);
             }
         }
     }

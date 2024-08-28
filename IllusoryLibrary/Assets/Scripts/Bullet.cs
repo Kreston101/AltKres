@@ -35,13 +35,13 @@ public class Bullet : MonoBehaviour
             if (piercedCount < maxPierce)
             {
                 piercedCount++;
-                collision.gameObject.GetComponent<Enemy>().TakeDamage(damage);
+                collision.gameObject.GetComponent<Enemy>().StartCoroutine("TakeDamage", damage);
                 Debug.Log("ranged hit");
             }
             else
             {
                 Destroy(gameObject);
-                collision.gameObject.GetComponent<Enemy>().TakeDamage(damage);
+                collision.gameObject.GetComponent<Enemy>().StartCoroutine("TakeDamage", damage);
             }
         }
         else
