@@ -11,6 +11,8 @@ public class Bullet : MonoBehaviour
     public float direction;
     public int damage;
 
+    [SerializeField] private LayerMask attackableLayer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,23 +32,36 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.GetComponent<Enemy>() != null)
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            if (piercedCount < maxPierce)
+            if(piercedCount < maxPierce)
             {
-                piercedCount++;
-                collision.gameObject.GetComponent<Enemy>().StartCoroutine("TakeDamage", damage);
-                Debug.Log("ranged hit");
+                if (collision.GetComponent<Enemy>())
+                {
+                    collision.gameObject.GetComponent<Enemy>().StartCoroutine("TakeDamage", damage);
+                }
+                else if (collision.GetComponent<Flyer>())
+                {
+                    collision.gameObject.GetComponent<Flyer>().StartCoroutine("TakeDamage", damage);
+                }
             }
             else
             {
                 Destroy(gameObject);
-                collision.gameObject.GetComponent<Enemy>().StartCoroutine("TakeDamage", damage);
+                if (collision.GetComponent<Enemy>())
+                {
+                    collision.gameObject.GetComponent<Enemy>().StartCoroutine("TakeDamage", damage);
+                }
+                else if (collision.GetComponent<Flyer>())
+                {
+                    collision.gameObject.GetComponent<Flyer>().StartCoroutine("TakeDamage", damage);
+                }
             }
         }
-        else
+        else if (collision.gameObject.CompareTag("Breakable"))
         {
-            Debug.Log("No coll???");
+            collision.GetComponent<BreakableObject>().TakeDamage(damage);
+            Destroy(gameObject);
         }
     }
 }

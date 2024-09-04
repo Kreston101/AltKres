@@ -1,16 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Playables;
 
-public class Enemy : MonoBehaviour //make as base class at some point or smthing
+public class Flyer : MonoBehaviour
 {
-    public int health = 5;
+    public int health = 3;
     public int damage = 1;
 
     private Rigidbody2D rb2d;
-    private float timer = 0f;
-    [SerializeField] float walkTime = 4f;
     private bool damaged = false;
 
     // Start is called before the first frame update
@@ -22,28 +19,15 @@ public class Enemy : MonoBehaviour //make as base class at some point or smthing
     // Update is called once per frame
     void Update()
     {
-        if(health <= 0)
+        if (health <= 0)
         {
             Destroy(gameObject);
         }
-
-        //if(!damaged)
-        //{
-        //    if (timer <= walkTime)
-        //    {
-        //        timer += Time.deltaTime;
-        //        rb2d.velocity = new Vector2(transform.localScale.x * 3, 0);
-        //    }
-        //    else
-        //    {
-        //        timer = 0;
-        //        transform.localScale = new Vector2(transform.localScale.x * -1, transform.localScale.y);
-        //    }
-        //}
     }
 
     public IEnumerator TakeDamage(int damage)
     {
+        Debug.Log("hit taken");
         damaged = true;
         health -= damage;
         rb2d.velocity = new Vector2(transform.localScale.x * 15 * -1, 0);

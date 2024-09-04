@@ -235,7 +235,14 @@ public class PlayerController : MonoBehaviour
             if (objectHit.CompareTag("Enemy"))
             {
                 Debug.Log(objectHit.name);
-                objectHit.GetComponent<Enemy>().StartCoroutine("TakeDamage", damage);
+                if (objectHit.GetComponent<Enemy>())
+                {
+                    objectHit.GetComponent<Enemy>().StartCoroutine("TakeDamage", damage);
+                }
+                else if (objectHit.GetComponent<Flyer>())
+                {
+                    objectHit.GetComponent<Flyer>().StartCoroutine("TakeDamage", damage);
+                }
             }
             else if (objectHit.CompareTag("Breakable"))
             {
