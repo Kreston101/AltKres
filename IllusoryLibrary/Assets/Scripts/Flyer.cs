@@ -30,10 +30,28 @@ public class Flyer : MonoBehaviour
         }
 
         Vector3 distance = player.transform.position - transform.position;
+        Debug.DrawLine(transform.position, player.transform.position);
 
         if (distance.magnitude <= 5f)
         {
-
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, distance, 5f);
+            for(int i = 1; i < hits.Length; i++)
+            {
+                if (hits[i].collider.gameObject != player)
+                {
+                    Debug.Log(hits[i].collider.gameObject);
+                    break;
+                }
+                else
+                {
+                    Debug.Log(hits[i].collider.gameObject);
+                    chase = true;
+                }
+            }
+        }
+        else
+        {
+            chase = false;
         }
     }
 
