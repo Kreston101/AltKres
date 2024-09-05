@@ -6,17 +6,12 @@ public class BreakableObject : MonoBehaviour
 {
     public int health = 5;
 
-    // Update is called once per frame
-    void Update()
+    public void TakeDamage(int damage)
     {
+        health -= damage;
         if (health <= 0)
         {
             Destroy(gameObject);
         }
-    }
-
-    public void TakeDamage(int damage)
-    {
-        health -= damage;
     }
 }

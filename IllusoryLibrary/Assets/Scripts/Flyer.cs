@@ -9,11 +9,16 @@ public class Flyer : MonoBehaviour
 
     private Rigidbody2D rb2d;
     private bool damaged = false;
+    private bool chase = false;
+
+    private GameObject player;
+    [SerializeField] private LayerMask playerLayer;
 
     // Start is called before the first frame update
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        player = PlayerController.Instance.gameObject;
     }
 
     // Update is called once per frame
@@ -22,6 +27,13 @@ public class Flyer : MonoBehaviour
         if (health <= 0)
         {
             Destroy(gameObject);
+        }
+
+        Vector3 distance = player.transform.position - transform.position;
+
+        if (distance.magnitude <= 5f)
+        {
+
         }
     }
 
