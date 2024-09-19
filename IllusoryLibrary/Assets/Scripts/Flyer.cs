@@ -6,12 +6,15 @@ public class Flyer : MonoBehaviour
 {
     public int health = 3;
     public int damage = 1;
+    public float speed = 3;
+    public float aggroDist = 10f;
 
     private Rigidbody2D rb2d;
     private bool damaged = false;
     private bool chase = false;
 
     private GameObject player;
+    private Vector3 origin;
     [SerializeField] private LayerMask playerLayer;
 
     // Start is called before the first frame update
@@ -19,6 +22,7 @@ public class Flyer : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         player = PlayerController.Instance.gameObject;
+        origin = transform.position;
     }
 
     // Update is called once per frame
@@ -28,30 +32,29 @@ public class Flyer : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
 
+    private void FixedUpdate()
+    {
         Vector3 distance = player.transform.position - transform.position;
-        Debug.DrawLine(transform.position, player.transform.position);
+        //Debug.DrawLine(transform.position, player.transform.position);
 
-        if (distance.magnitude <= 5f)
+        if (distance.magnitude <= aggroDist && !damaged)
         {
-            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, distance, 5f);
-            for(int i = 1; i < hits.Length; i++)
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, distance, aggroDist);
+            for (int i = 1; i < hits.Length; i++)
             {
                 if (hits[i].collider.gameObject != player)
                 {
-                    Debug.Log(hits[i].collider.gameObject);
+                    //Debug.Log(hits[i].collider.gameObject);
                     break;
                 }
                 else
                 {
-                    Debug.Log(hits[i].collider.gameObject);
-                    chase = true;
+                    //Debug.Log(hits[i].collider.gameObject);
+                    rb2d.MovePosition(Vector2.MoveTowards(transform.position, player.transform.position, Time.deltaTime * speed));
                 }
             }
-        }
-        else
-        {
-            chase = false;
         }
     }
 
