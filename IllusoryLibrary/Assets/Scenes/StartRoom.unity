@@ -633,7 +633,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 8754538f2bc8788459ccf0b02e8868d8, type: 2}
     - target: {fileID: 4519389922402000360, guid: e3f1d2369721dc542893f68a57394a06, type: 3}
       propertyPath: targetRoom
-      value: hallway
+      value: loopinghallway
       objectReference: {fileID: 0}
     - target: {fileID: 4519389922402000361, guid: e3f1d2369721dc542893f68a57394a06, type: 3}
       propertyPath: m_RootOrder

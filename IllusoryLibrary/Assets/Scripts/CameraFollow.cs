@@ -7,11 +7,15 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float followSpeed = 0.1f;
     [SerializeField] private Vector3 offset = new Vector3(0, 0, -10);
     [SerializeField] private float ceilingBuffer, groundBuffer, leftBuffer, rightBuffer;
+    private float ceilingOriginal, groundOriginal, leftOriginal, rightOriginal;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        ceilingOriginal = ceilingBuffer;
+        groundOriginal = groundBuffer;
+        leftOriginal = leftBuffer;
+        rightOriginal = rightBuffer;
     }
 
     // Update is called once per frame
@@ -39,5 +43,18 @@ public class CameraFollow : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, groundBuffer, 0) + offset;
         }
+    }
+
+    public void SetGroundBuffer(float buffer)
+    {
+        groundBuffer = buffer;
+    }
+
+    public void ResetGroundBuffer()
+    {
+        //ceilingBuffer = ceilingOriginal;
+        groundBuffer = groundOriginal;
+        //leftBuffer = leftOriginal;
+        //rightBuffer = rightOriginal;
     }
 }

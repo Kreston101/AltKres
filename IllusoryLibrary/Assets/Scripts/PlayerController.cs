@@ -263,12 +263,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public IEnumerator TakeDamage(int damage)
+    public IEnumerator TakeDamage(int damage, float direction)
     {
         //tookDamage = true;
         playerState.damaged = true;
         rb2d.gravityScale = 0;
-        rb2d.velocity = new Vector2(transform.localScale.x * 15 * -1, 0);
+        rb2d.velocity = new Vector2(direction * 15, 0);
         yield return new WaitForSeconds(0.25f);
         rb2d.gravityScale = gravity;
         playerState.damaged = false;
