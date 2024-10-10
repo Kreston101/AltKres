@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private PlayerStates playerState;
+    public PlayerStates playerState;
     private Rigidbody2D rb2d;
     [SerializeField] private float speed = 5;
     private float horizontal;
