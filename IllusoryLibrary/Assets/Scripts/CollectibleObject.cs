@@ -9,7 +9,7 @@ public class CollectibleObject : MonoBehaviour
 
     private void Start()
     {
-        collected = Progress.Instance.LoadState(objId);
+        collected = Progress.Instance.LoadObjectState(objId);
         if (collected)
         {
             gameObject.SetActive(false);
@@ -23,7 +23,7 @@ public class CollectibleObject : MonoBehaviour
         {
             collected = true;
             gameObject.SetActive(false);
-            Progress.Instance.AddObjectToSave(objId, collected); 
+            Progress.Instance.SaveObjectState(objId, collected); 
         }
     }
 }

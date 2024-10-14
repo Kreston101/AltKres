@@ -6,9 +6,10 @@ using UnityEngine;
 
 public class Progress : MonoBehaviour
 {
-    GameManager gm;
-    PlayerController playerRef;
-    Dictionary<int,bool> objsToSave = new Dictionary<int,bool>();
+    private GameManager gm;
+    private PlayerController playerRef;
+    private Dictionary<int,bool> objsToSave = new Dictionary<int,bool>();
+
     //save point, scene + transform
 
     public static Progress Instance {  get; private set; }
@@ -27,18 +28,19 @@ public class Progress : MonoBehaviour
         //gm = GameManager.Instance;
         playerRef = PlayerController.Instance;
         Debug.Log(objsToSave.Count);
+        LoadFromFile();
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P))
         {
             SaveToFile();
         }
     }
 
     //objects call this
-    public void AddObjectToSave(int id, bool state)
+    public void SaveObjectState(int id, bool state)
     {
         if(!objsToSave.ContainsKey(id))
         {
@@ -47,9 +49,9 @@ public class Progress : MonoBehaviour
     }
 
     //objs call this to load their state
-    public bool LoadState(int id)
+    public bool LoadObjectState(int id)
     {
-        if (objsToSave.ContainsKey(id)) 
+        if (objsToSave.ContainsKey(id))
         {
             return true;
         }
@@ -59,7 +61,19 @@ public class Progress : MonoBehaviour
     public void SaveToFile()
     {
         string jsonString = JsonConvert.SerializeObject(objsToSave, Formatting.Indented);
-        File.WriteAllText("save.json", jsonString);
-        Debug.Log("Wrote file...idk where");
+        File.WriteAllText("../IllusoryLibrary/save.json", jsonString);
+    }
+
+    public void LoadFromFile()
+    {
+        if(File.Exists("../IllusoryLibrary/save.json"))
+        {
+            string jsonString = File.ReadAllText("../IllusoryLibrary/save.json");
+            objsToSave = JsonConvert.DeserializeObject<Dictionary<int, bool>>(jsonString);
+        }
+        else
+        {
+            Debug.Log("no save file");
+        }
     }
 }

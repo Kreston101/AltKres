@@ -815,11 +815,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1981485911162554114, guid: b45493f071039fb48b1115bccb248cd5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.79
+      value: 7.15
       objectReference: {fileID: 0}
     - target: {fileID: 1981485911162554114, guid: b45493f071039fb48b1115bccb248cd5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.75
+      value: 15.37
       objectReference: {fileID: 0}
     - target: {fileID: 1981485911162554114, guid: b45493f071039fb48b1115bccb248cd5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -929,11 +929,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6860683735478536452, guid: d567b2c1ffdf2a943a244f9a793f1ad2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.9937801
+      value: 3.77
       objectReference: {fileID: 0}
     - target: {fileID: 6860683735478536452, guid: d567b2c1ffdf2a943a244f9a793f1ad2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 12.722623
+      value: 8.06
       objectReference: {fileID: 0}
     - target: {fileID: 6860683735478536452, guid: d567b2c1ffdf2a943a244f9a793f1ad2, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2662,6 +2662,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7aa19632ebd29244a9722c7b12a76935, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path: ../IllusoryLibrary/Assets/save.json
 --- !u!4 &1793685393
 Transform:
   m_ObjectHideFlags: 0

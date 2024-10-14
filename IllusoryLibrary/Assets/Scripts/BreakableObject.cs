@@ -10,7 +10,7 @@ public class BreakableObject : MonoBehaviour
 
     private void Start()
     {
-        destroyed = Progress.Instance.LoadState(objId);
+        destroyed = Progress.Instance.LoadObjectState(objId);
         if (destroyed)
         {
             gameObject.SetActive(false);
@@ -25,7 +25,7 @@ public class BreakableObject : MonoBehaviour
         {
             gameObject.SetActive(false);
             destroyed = true;
-            Progress.Instance.AddObjectToSave(objId, destroyed);
+            Progress.Instance.SaveObjectState(objId, destroyed);
         }
     }
 }
