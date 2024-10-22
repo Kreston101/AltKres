@@ -37,6 +37,7 @@ public class Flyer : MonoBehaviour
     private void FixedUpdate()
     {
         Vector3 distance = player.transform.position - transform.position;
+        //Debug.Log(distance);
         //Debug.DrawLine(transform.position, player.transform.position);
 
         if (distance.magnitude <= aggroDist && !damaged)
@@ -52,6 +53,14 @@ public class Flyer : MonoBehaviour
                 else
                 {
                     //Debug.Log(hits[i].collider.gameObject);
+                    if(distance.x < 0)
+                    {
+                        transform.localScale = new Vector2(-1, transform.localScale.y);
+                    }
+                    else if(distance.x > 0)
+                    { 
+                        transform.localScale = new Vector2(1, transform.localScale.y); 
+                    }
                     rb2d.MovePosition(Vector2.MoveTowards(transform.position, player.transform.position, Time.deltaTime * speed));
                 }
             }
@@ -64,7 +73,7 @@ public class Flyer : MonoBehaviour
         damaged = true;
         health -= damage;
         rb2d.velocity = new Vector2(PlayerController.Instance.transform.localScale.x * 15, 0);
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.25f);
         rb2d.velocity = Vector2.zero;
         damaged = false;
     }

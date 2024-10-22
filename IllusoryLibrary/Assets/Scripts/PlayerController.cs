@@ -101,11 +101,14 @@ public class PlayerController : MonoBehaviour
 
     private void StartDash()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !dashed && playerState.unlockedDash)
+        if (playerState.unlockedDash)
         {
-            StartCoroutine(Dash());
-            dashed = true;
-            GetLastGroundedPosition();
+            if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !dashed)
+            {
+                StartCoroutine(Dash());
+                dashed = true;
+                GetLastGroundedPosition();
+            }
         }
         if (isGrounded())
         {

@@ -10,4 +10,8 @@ public class PlayerStates : MonoBehaviour
 
     public bool unlockedDash = false;
     public bool unlockedExtraJump = false;
+
+    public void SendStatesToSave() { }
+
+    public void LoadStatesFromSave() { }
 }

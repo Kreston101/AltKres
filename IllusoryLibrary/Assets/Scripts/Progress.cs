@@ -10,6 +10,8 @@ public class Progress : MonoBehaviour
     private PlayerController playerRef;
     private Dictionary<int,bool> objsToSave = new Dictionary<int,bool>();
 
+    string objectsSavePath;
+    string playerStatsPath;
     //save point, scene + transform
 
     public static Progress Instance {  get; private set; }
@@ -28,14 +30,14 @@ public class Progress : MonoBehaviour
         //gm = GameManager.Instance;
         playerRef = PlayerController.Instance;
         Debug.Log(objsToSave.Count);
-        LoadFromFile();
+        LoadObjectStateFromFile();
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            SaveToFile();
+            SaveObjectStateToFile();
         }
     }
 
@@ -58,13 +60,13 @@ public class Progress : MonoBehaviour
         else return false;
     }
 
-    public void SaveToFile()
+    public void SaveObjectStateToFile()
     {
         string jsonString = JsonConvert.SerializeObject(objsToSave, Formatting.Indented);
         File.WriteAllText("../IllusoryLibrary/save.json", jsonString);
     }
 
-    public void LoadFromFile()
+    public void LoadObjectStateFromFile()
     {
         if(File.Exists("../IllusoryLibrary/save.json"))
         {
@@ -76,4 +78,12 @@ public class Progress : MonoBehaviour
             Debug.Log("no save file");
         }
     }
+
+    public void SavePlayerStates() { }
+
+    public void LoadPlayerStates() { }
+
+    public void SavePlayerStatesToFile() { }
+
+    public void LoadPlayerStatesFromFile() { }
 }

@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 6860683735478536456}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -24.37, y: 9.09, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -149,6 +149,7 @@ MonoBehaviour:
   health: 3
   damage: 1
   speed: 5
+  aggroDist: 10
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
