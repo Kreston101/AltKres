@@ -8,10 +8,7 @@ public class PlayerStates : MonoBehaviour
     public bool dashing = false;
     public bool damaged = false;
 
+    //attatch to items later
     public bool unlockedDash = false;
     public bool unlockedExtraJump = false;
-
-    public void SendStatesToSave() { }
-
-    public void LoadStatesFromSave() { }
 }

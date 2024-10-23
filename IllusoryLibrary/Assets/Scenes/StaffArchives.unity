@@ -379,7 +379,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 3
   destroyed: 0
-  objId: 1
+  objId: wall1
 --- !u!1 &247196510
 GameObject:
   m_ObjectHideFlags: 0
@@ -2065,7 +2065,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 3
   destroyed: 0
-  objId: 0
+  objId: wall0
 --- !u!61 &1533616554
 BoxCollider2D:
   m_ObjectHideFlags: 0

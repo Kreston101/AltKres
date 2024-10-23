@@ -8,7 +8,7 @@ public class Progress : MonoBehaviour
 {
     private GameManager gm;
     private PlayerController playerRef;
-    private Dictionary<int,bool> objsToSave = new Dictionary<int,bool>();
+    private Dictionary<string,bool> objsToSave = new Dictionary<string,bool>();
 
     string objectsSavePath;
     string playerStatsPath;
@@ -31,18 +31,11 @@ public class Progress : MonoBehaviour
         playerRef = PlayerController.Instance;
         Debug.Log(objsToSave.Count);
         LoadObjectStateFromFile();
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            SaveObjectStateToFile();
-        }
+        Debug.Log("loading game");
     }
 
     //objects call this
-    public void SaveObjectState(int id, bool state)
+    public void SaveObjectState(string id, bool state)
     {
         if(!objsToSave.ContainsKey(id))
         {
@@ -51,7 +44,7 @@ public class Progress : MonoBehaviour
     }
 
     //objs call this to load their state
-    public bool LoadObjectState(int id)
+    public bool LoadObjectState(string id)
     {
         if (objsToSave.ContainsKey(id))
         {
@@ -63,27 +56,21 @@ public class Progress : MonoBehaviour
     public void SaveObjectStateToFile()
     {
         string jsonString = JsonConvert.SerializeObject(objsToSave, Formatting.Indented);
-        File.WriteAllText("../IllusoryLibrary/save.json", jsonString);
+        File.WriteAllText("../IllusoryLibrary/Save.json", jsonString);
+        Debug.Log("game saved");
     }
 
     public void LoadObjectStateFromFile()
     {
-        if(File.Exists("../IllusoryLibrary/save.json"))
+        if(File.Exists("../IllusoryLibrary/Save.json"))
         {
-            string jsonString = File.ReadAllText("../IllusoryLibrary/save.json");
-            objsToSave = JsonConvert.DeserializeObject<Dictionary<int, bool>>(jsonString);
+            string jsonString = File.ReadAllText("../IllusoryLibrary/Save.json");
+            objsToSave = JsonConvert.DeserializeObject<Dictionary<string, bool>>(jsonString);
+            Debug.Log("game loaded");
         }
         else
         {
             Debug.Log("no save file");
         }
     }
-
-    public void SavePlayerStates() { }
-
-    public void LoadPlayerStates() { }
-
-    public void SavePlayerStatesToFile() { }
-
-    public void LoadPlayerStatesFromFile() { }
 }

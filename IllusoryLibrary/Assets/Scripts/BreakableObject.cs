@@ -6,7 +6,7 @@ public class BreakableObject : MonoBehaviour
 {
     public int health = 5;
     public bool destroyed = false;
-    public int objId;
+    public string objId;
 
     private void Start()
     {

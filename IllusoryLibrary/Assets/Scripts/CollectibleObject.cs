@@ -5,7 +5,7 @@ using UnityEngine;
 public class CollectibleObject : MonoBehaviour
 {
     public bool collected = false;
-    public int objId;
+    public string objId;
 
     private void Start()
     {
