@@ -18,20 +18,20 @@ public class Progress : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
-        DontDestroyOnLoad(this);
-        //gm = GameManager.Instance;
-        playerRef = PlayerController.Instance;
-        Debug.Log(objsToSave.Count);
-        LoadObjectStateFromFile();
-        Debug.Log("loading game");
+        //if (Instance != null && Instance != this)
+        //{
+        //    Destroy(gameObject);
+        //}
+        //else
+        //{
+        //    Instance = this;
+        //}
+        //DontDestroyOnLoad(this);
+        ////gm = GameManager.Instance;
+        //playerRef = PlayerController.Instance;
+        //LoadObjectStateFromFile();
+        //Debug.Log(objsToSave.Count);
+        ////Debug.Log("loading game");
     }
 
     //objects call this

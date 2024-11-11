@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BreakableObject : MonoBehaviour
+public class BreakableObject : MonoBehaviour, IDataPersistence
 {
     public int health = 5;
     public bool destroyed = false;
@@ -10,12 +10,7 @@ public class BreakableObject : MonoBehaviour
 
     private void Start()
     {
-        destroyed = Progress.Instance.LoadObjectState(objId);
-        if (destroyed)
-        {
-            gameObject.SetActive(false);
-        }
-        else gameObject.SetActive(true);
+
     }
 
     public void TakeDamage(int damage)
@@ -25,7 +20,27 @@ public class BreakableObject : MonoBehaviour
         {
             gameObject.SetActive(false);
             destroyed = true;
-            Progress.Instance.SaveObjectState(objId, destroyed);
+        }
+    }
+
+    public void LoadData(GameData data)
+    {
+        data.walls.TryGetValue(objId, out destroyed);
+        if (destroyed)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        if(data.walls.ContainsKey(objId))
+        {
+            data.walls[objId] = destroyed;
+        }
+        else
+        {
+            data.walls.Add(objId, destroyed);
         }
     }
 }

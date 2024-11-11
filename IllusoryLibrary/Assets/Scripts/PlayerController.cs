@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -46,10 +47,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int maxBullets = 9;
     [SerializeField] private GameObject bulletFab;
 
-    public int health = 9;
+    public int health = 2;
     public int maxHealth = 9;
 
     private float gravity;
+
+    //temp
+    public int dmgCount = 0;
 
     public static PlayerController Instance { get; set; }
 
@@ -269,6 +273,7 @@ public class PlayerController : MonoBehaviour
     public IEnumerator TakeDamage(int damage, float direction)
     {
         //tookDamage = true;
+        dmgCount++;
         playerState.damaged = true;
         rb2d.gravityScale = 0;
         rb2d.velocity = new Vector2(direction * 15, 0);

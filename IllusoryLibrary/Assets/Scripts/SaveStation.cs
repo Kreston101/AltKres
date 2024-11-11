@@ -6,9 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class SaveStation : MonoBehaviour
 {
-    private GameManager gm;
-    private PlayerController playerRef;
-    private Progress progress;
     public string sceneName;
     public bool canSaveGame = false;
 
@@ -16,7 +13,6 @@ public class SaveStation : MonoBehaviour
     void Start()
     {
         sceneName = SceneManager.GetActiveScene().name;
-        progress = Progress.Instance;
     }
 
     // Update is called once per frame
@@ -24,8 +20,7 @@ public class SaveStation : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.W) && canSaveGame) 
         {
-            progress.SaveObjectStateToFile();
-            Debug.Log("interacted with save object");
+
         }
     }
 

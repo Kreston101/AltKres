@@ -2,19 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CollectibleObject : MonoBehaviour
+public class CollectibleObject : MonoBehaviour, IDataPersistence
 {
     public bool collected = false;
     public string objId;
 
     private void Start()
     {
-        collected = Progress.Instance.LoadObjectState(objId);
-        if (collected)
-        {
-            gameObject.SetActive(false);
-        }
-        else gameObject.SetActive(true);
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -23,7 +18,27 @@ public class CollectibleObject : MonoBehaviour
         {
             collected = true;
             gameObject.SetActive(false);
-            Progress.Instance.SaveObjectState(objId, collected); 
+        }
+    }
+
+    public void LoadData(GameData data)
+    {
+        data.collectables.TryGetValue(objId, out collected);
+        if (collected)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        if (data.collectables.ContainsKey(objId))
+        {
+            data.collectables[objId] = collected;
+        }
+        else
+        {
+            data.collectables.Add(objId, collected);
         }
     }
 }

@@ -1,3 +1,8 @@
 {
-  "wall1": true
+  "loadScene": "StartRoom",
+  "walls": {
+    "wall1": false,
+    "wall0": false
+  },
+  "collectables": {}
 }
