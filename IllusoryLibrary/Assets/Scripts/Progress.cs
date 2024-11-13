@@ -33,7 +33,6 @@ public class Progress : MonoBehaviour
         DontDestroyOnLoad(this);
         LoadFromFile();
         playerRef = PlayerController.Instance;
-        SceneManager.LoadScene(progLoadScene);
     }
 
     void OnEnable()
