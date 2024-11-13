@@ -21,24 +21,24 @@ public class CollectibleObject : MonoBehaviour, IDataPersistence
         }
     }
 
-    public void LoadData(GameData data)
+    public void LoadData()
     {
-        data.collectables.TryGetValue(objId, out collected);
+        Progress.Instance.progCollectables.TryGetValue(objId, out collected);
         if (collected)
         {
             gameObject.SetActive(false);
         }
     }
 
-    public void SaveData(ref GameData data)
+    public void SaveData()
     {
-        if (data.collectables.ContainsKey(objId))
+        if (Progress.Instance.progCollectables.ContainsKey(objId))
         {
-            data.collectables[objId] = collected;
+            Progress.Instance.progCollectables[objId] = collected;
         }
         else
         {
-            data.collectables.Add(objId, collected);
+            Progress.Instance.progCollectables.Add(objId, collected);
         }
     }
 }
