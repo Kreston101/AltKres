@@ -52,9 +52,6 @@ public class PlayerController : MonoBehaviour
 
     private float gravity;
 
-    //temp
-    public int dmgCount = 0;
-
     public static PlayerController Instance { get; set; }
 
     private void Awake()
@@ -273,7 +270,6 @@ public class PlayerController : MonoBehaviour
     public IEnumerator TakeDamage(int damage, float direction)
     {
         //tookDamage = true;
-        dmgCount++;
         playerState.damaged = true;
         rb2d.gravityScale = 0;
         rb2d.velocity = new Vector2(direction * 15, 0);

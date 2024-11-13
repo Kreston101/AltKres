@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//can also be interfaced later?
 public class BreakableObject : MonoBehaviour, IDataPersistence
 {
     public int health = 5;
@@ -23,24 +24,24 @@ public class BreakableObject : MonoBehaviour, IDataPersistence
         }
     }
 
-    public void LoadData(GameData data)
+    public void LoadData()
     {
-        data.walls.TryGetValue(objId, out destroyed);
+        Progress.Instance.progWalls.TryGetValue(objId, out destroyed);
         if (destroyed)
         {
             gameObject.SetActive(false);
         }
     }
 
-    public void SaveData(ref GameData data)
+    public void SaveData()
     {
-        if(data.walls.ContainsKey(objId))
+        if (Progress.Instance.progWalls.ContainsKey(objId))
         {
-            data.walls[objId] = destroyed;
+            Progress.Instance.progWalls[objId] = destroyed;
         }
         else
         {
-            data.walls.Add(objId, destroyed);
+            Progress.Instance.progWalls.Add(objId, destroyed);
         }
     }
 }
