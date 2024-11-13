@@ -20,7 +20,8 @@ public class SaveStation : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.W) && canSaveGame) 
         {
-
+            Progress.Instance.progLoadScene = sceneName;
+            Progress.Instance.SaveToFile();
         }
     }
 

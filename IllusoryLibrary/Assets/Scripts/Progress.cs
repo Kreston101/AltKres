@@ -33,6 +33,7 @@ public class Progress : MonoBehaviour
         DontDestroyOnLoad(this);
         LoadFromFile();
         playerRef = PlayerController.Instance;
+        SceneManager.LoadScene(progLoadScene);
     }
 
     void OnEnable()
@@ -51,11 +52,6 @@ public class Progress : MonoBehaviour
     private void OnSceneUnloaded(Scene current)
     {
         SaveObjsData();
-    }
-
-    private void OnApplicationQuit()
-    {
-        SaveToFile();
     }
 
     //call ON SCENE ENTER
