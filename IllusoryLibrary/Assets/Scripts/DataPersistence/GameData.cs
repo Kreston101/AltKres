@@ -9,6 +9,7 @@ public class GameData
     public Dictionary<string, bool> walls;
     public Dictionary<string, bool> collectables;
 
+    //defaults
     public GameData()
     {
         loadScene = "StartRoom"; 

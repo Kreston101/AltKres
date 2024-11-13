@@ -35,11 +35,6 @@ public class Progress : MonoBehaviour
         playerRef = PlayerController.Instance;
     }
 
-    private void OnApplicationQuit()
-    {
-        SaveToFile();
-    }
-
     void OnEnable()
     {
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -58,14 +53,9 @@ public class Progress : MonoBehaviour
         SaveObjsData();
     }
 
-    //called ON SCENE EXIT
-    public void SaveObjsData()
+    private void OnApplicationQuit()
     {
-        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
-        {
-            dataPersistenceObj.SaveData();
-            Debug.Log(dataPersistenceObj.ToString());
-        }
+        SaveToFile();
     }
 
     //call ON SCENE ENTER
@@ -74,6 +64,16 @@ public class Progress : MonoBehaviour
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
             dataPersistenceObj.LoadData();
+            Debug.Log(dataPersistenceObj.ToString());
+        }
+    }
+
+    //called ON SCENE EXIT
+    public void SaveObjsData()
+    {
+        foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
+        {
+            dataPersistenceObj.SaveData();
             Debug.Log(dataPersistenceObj.ToString());
         }
     }
@@ -90,6 +90,8 @@ public class Progress : MonoBehaviour
     //saves all data to file
     public void SaveToFile()
     {
+        SaveObjsData();
+
         gameData.loadScene = progLoadScene; 
         gameData.walls = progWalls; 
         gameData.collectables = progCollectables;
