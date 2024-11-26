@@ -52,9 +52,22 @@ public class CameraFollow : MonoBehaviour
 
     public void ResetGroundBuffer()
     {
-        //ceilingBuffer = ceilingOriginal;
         groundBuffer = groundOriginal;
-        //leftBuffer = leftOriginal;
-        //rightBuffer = rightOriginal;
+    }
+
+    public void ResetAllBuffers()
+    {
+        ceilingBuffer = ceilingOriginal;
+        groundBuffer = groundOriginal;
+        leftBuffer = leftOriginal;
+        rightBuffer = rightOriginal;
+    }
+
+    public void SetNewBuffers(float newCeiling, float newFloor, float newLeft, float newRight)
+    {
+        ceilingBuffer = newCeiling;
+        groundBuffer = newFloor; 
+        leftBuffer = newLeft; 
+        rightBuffer = newRight;
     }
 }

@@ -69,7 +69,7 @@ public class Progress : MonoBehaviour
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
         {
             dataPersistenceObj.SaveData();
-            Debug.Log(dataPersistenceObj.ToString());
+            //Debug.Log(dataPersistenceObj.ToString());
         }
     }
 
