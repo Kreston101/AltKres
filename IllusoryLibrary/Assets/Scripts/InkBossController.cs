@@ -7,40 +7,30 @@ using UnityEngine;
 
 public class InkBossController : MonoBehaviour
 {
-    private int waveCount = 1;
-    [SerializeField] private int maxWaves;
-    [SerializeField] private GameObject[] waveSpawnPoints;
-    [SerializeField] private GameObject[] orbSpawnPoints;
-    private bool waveCleared;
+    public bool fightStarted;
+    public int damage;
+    public int health;
 
-    public GameObject flyerFab;
-    public GameObject walkerFab;
-    public GameObject orbFab;
+    private PlayerController player;
+    private bool damaged = false;
 
-    private void CreateWave()
+    //moves towards player by jumping (set distance or towards player location)?
+    //moves away from player by sliding backwards
+    //idles a bit
+    //charges a knockback wave (varible charge time?)
+
+    private void Start()
     {
-        List<GameObject> tempWaveList = waveSpawnPoints.ToList();
-        List<GameObject> tempListOrb = orbSpawnPoints.ToList();
+        player = PlayerController.Instance;
+    }
 
-        for (int i = 0; i < tempWaveList.Count; i++)
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log("something entered");
+        if (collision.gameObject == PlayerController.Instance.gameObject)
         {
-            int randInt = UnityEngine.Random.Range(0, tempWaveList.Count);
-
-            if(randInt == 3 || randInt == 6)
-            {
-                tempListOrb.Remove(waveSpawnPoints[randInt]);
-            }
-
-            if(randInt <= 3)
-            {
-                Instantiate(flyerFab, waveSpawnPoints[randInt].transform.position, Quaternion.identity);
-            }
-            else
-            {
-                Instantiate(walkerFab, waveSpawnPoints[randInt].transform.position, Quaternion.identity);
-            }
-
-            tempWaveList.RemoveAt(randInt);
+            Debug.Log("player entered");
+            PlayerController.Instance.StartCoroutine(PlayerController.Instance.TakeDamage(damage, transform.localScale.x));
         }
     }
 }
