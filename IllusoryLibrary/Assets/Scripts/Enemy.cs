@@ -58,7 +58,7 @@ public class Enemy : MonoBehaviour //make as base class at some point or smthing
         if (collision.gameObject == PlayerController.Instance.gameObject)
         {
             Debug.Log("player entered");
-            PlayerController.Instance.StartCoroutine(PlayerController.Instance.TakeDamage(damage, transform.localScale.x));
+            PlayerController.Instance.StartCoroutine(PlayerController.Instance.TakeDamage(damage, transform.localScale.x, GetComponent<Collider2D>(), 15f));
         }
     }
 }

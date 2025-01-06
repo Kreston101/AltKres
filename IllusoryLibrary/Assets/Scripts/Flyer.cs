@@ -84,7 +84,7 @@ public class Flyer : MonoBehaviour
         if (collision.gameObject == PlayerController.Instance.gameObject)
         {
             Debug.Log("player entered");
-            PlayerController.Instance.StartCoroutine(PlayerController.Instance.TakeDamage(damage, transform.localScale.x));
+            PlayerController.Instance.StartCoroutine(PlayerController.Instance.TakeDamage(damage, transform.localScale.x, GetComponent<Collider2D>(), 15f));
         }
     }
 }

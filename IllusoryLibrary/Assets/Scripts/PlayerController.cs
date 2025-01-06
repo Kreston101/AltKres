@@ -267,13 +267,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public IEnumerator TakeDamage(int damage, float direction)
+    public IEnumerator TakeDamage(int damage, float direction, Collider2D other, float knockBack) //15? for normal 25 for boss
     {
         //tookDamage = true;
+        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), other, true);
         playerState.damaged = true;
         rb2d.gravityScale = 0;
-        rb2d.velocity = new Vector2(direction * 15, 0);
-        yield return new WaitForSeconds(0.25f);
+        rb2d.velocity = new Vector2(direction * knockBack, 0);
+        yield return new WaitForSeconds(0.5f);
+        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), other, false);
         rb2d.gravityScale = gravity;
         playerState.damaged = false;
         //tookDamage = false;

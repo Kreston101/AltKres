@@ -15,16 +15,19 @@ public class CameraPositionChanger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (lockedCamera)
+        if (collision.gameObject == PlayerController.Instance)
         {
-            lockedCamera = false;
-            mainCam.GetComponent<CameraFollow>().ResetAllBuffers();
-        }
-        else
-        {
-            lockedCamera = true;
-            mainCam.GetComponent<CameraFollow>().SetNewBuffers(newCeilingBuffer, newFloorBuffer, 
-                newLeftBuffer, newRightbuffer);
+            if (lockedCamera)
+            {
+                lockedCamera = false;
+                mainCam.GetComponent<CameraFollow>().ResetAllBuffers();
+            }
+            else
+            {
+                lockedCamera = true;
+                mainCam.GetComponent<CameraFollow>().SetNewBuffers(newCeilingBuffer, newFloorBuffer,
+                    newLeftBuffer, newRightbuffer);
+            }
         }
     }
 }
