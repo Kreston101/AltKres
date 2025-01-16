@@ -26,11 +26,12 @@ public class InkBossController : MonoBehaviour
     private float timer = 0f;
     private float randomIdleTime;
     private bool grounded = false;
+    [SerializeField] private GameObject roomManager;
 
     //DONE: BUT CLUNKY moves towards player by jumping (set distance or towards player location)?
     //DONE: moves away from player by sliding backwards
     //DONE: idles a bit
-    //charges a knockback wave (varible charge time?)
+    //DONE: charges a knockback wave (varible charge time?)
 
     private void Start()
     {
@@ -41,24 +42,32 @@ public class InkBossController : MonoBehaviour
 
     private void Update()
     {
-        if(isIdle)
+        if (fightStarted)
         {
-            timer += Time.deltaTime;
-            if (timer > randomIdleTime)
+            if (isIdle)
             {
-                int rand = UnityEngine.Random.Range(0, 10);
-                if (rand > 7)
+                timer += Time.deltaTime;
+                if (timer > randomIdleTime)
                 {
-                    StartCoroutine(ShockwaveAttack());
+                    int rand = UnityEngine.Random.Range(0, 10);
+                    if (rand > 7)
+                    {
+                        StartCoroutine(ShockwaveAttack());
+                        Debug.Log(hitsDuringIdle);
+                        hitsDuringIdle = 0;
+                    }
+                    else
+                    {
+                        StartCoroutine(JumpAtPlayer());
+                        Debug.Log(hitsDuringIdle);
+                        hitsDuringIdle = 0;
+                    }
                 }
-                else
+                else if (hitsDuringIdle > 3)
                 {
-                    StartCoroutine(JumpAtPlayer());
+                    StartCoroutine(SlideBack());
+                    timer = randomIdleTime;
                 }
-            }
-            else if (hitsDuringIdle > 5)
-            {
-                StartCoroutine(SlideBack());
             }
         }
     }
@@ -74,6 +83,25 @@ public class InkBossController : MonoBehaviour
         if(collision.gameObject.layer == 6)
         {
             grounded = true;
+        }
+    }
+
+    public void TakeDamage(int playerDamage)
+    {
+        if (health > 0)
+        {
+            health -= playerDamage;
+            if (isIdle)
+            {
+                hitsDuringIdle++;
+            }
+        }
+        else
+        {
+            //add killed state to save
+            gameObject.SetActive(false);
+            fightStarted = false;
+            roomManager.GetComponent<BossRoomManager>().OnBossFightEnded();
         }
     }
 
@@ -131,7 +159,7 @@ public class InkBossController : MonoBehaviour
         yield return new WaitUntil(() => grounded == true);
         //charge anim
         yield return new WaitForSeconds(3f);
-        rb2d.velocity = new Vector2(0, 15f);
+        rb2d.velocity = new Vector2(0, 13f);
         grounded = false;
         yield return new WaitUntil(() => grounded == true);
         GameObject holder;

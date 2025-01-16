@@ -44,10 +44,14 @@ public class Bullet : MonoBehaviour
                 {
                     collision.gameObject.GetComponent<Flyer>().StartCoroutine("TakeDamage", damage);
                 }
+                else if (collision.GetComponent<InkBossController>())
+                {
+                    collision.gameObject.GetComponent<InkBossController>().TakeDamage(damage);
+                }
             }
             else
             {
-                Destroy(gameObject);
+                gameObject.SetActive(false);
                 if (collision.GetComponent<Enemy>())
                 {
                     collision.gameObject.GetComponent<Enemy>().StartCoroutine("TakeDamage", damage);
@@ -56,6 +60,11 @@ public class Bullet : MonoBehaviour
                 {
                     collision.gameObject.GetComponent<Flyer>().StartCoroutine("TakeDamage", damage);
                 }
+                else if (collision.GetComponent<InkBossController>())
+                {
+                    collision.gameObject.GetComponent<InkBossController>().TakeDamage(damage);
+                }
+                Destroy(gameObject);
             }
         }
         else if (collision.gameObject.CompareTag("Breakable"))
