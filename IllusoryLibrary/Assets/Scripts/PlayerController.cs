@@ -47,12 +47,23 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int maxBullets = 9;
     [SerializeField] private GameObject bulletFab;
 
-    public int health = 2;
+    public int health = 3;
     public int maxHealth = 9;
+    public bool tookDamage;
 
     private float gravity;
 
     public static PlayerController Instance { get; set; }
+
+    //RESPAWN SYSTEM
+    //Most recent save point or start of game
+    //Do not reload the blank save file
+    //Figure out penalties
+    //Scene of save point, coordinates, and how to load them
+    //How to fit those ito save system (should be under the same spot where you load the game)
+    //Should be in he progress persistence obj
+    //shouldnt be that bad..?
+    //make the load into scene first
 
     private void Awake()
     {
@@ -86,6 +97,10 @@ public class PlayerController : MonoBehaviour
         }
         MeleeAtk();
         RangedAttack();
+        if(health <= 0)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     private void GetInputs()
@@ -247,6 +262,10 @@ public class PlayerController : MonoBehaviour
                 {
                     objectHit.GetComponent<Flyer>().StartCoroutine("TakeDamage", damage);
                 }
+                else if (objectHit.GetComponent<InkBossController>())
+                {
+                    objectHit.GetComponent<InkBossController>().TakeDamage(damage);
+                }
             }
             else if (objectHit.CompareTag("Breakable"))
             {
@@ -269,16 +288,22 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator TakeDamage(int damage, float direction, Collider2D other, float knockBack) //15? for normal 25 for boss
     {
-        //tookDamage = true;
-        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), other, true);
-        playerState.damaged = true;
-        rb2d.gravityScale = 0;
-        rb2d.velocity = new Vector2(direction * knockBack, 0);
-        yield return new WaitForSeconds(0.5f);
-        Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), other, false);
-        rb2d.gravityScale = gravity;
-        playerState.damaged = false;
-        //tookDamage = false;
+        if (!playerState.damaged)
+        {
+            playerState.damaged = true;
+            health -= damage;
+            Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), other, true);
+            rb2d.gravityScale = 0;
+            rb2d.velocity = new Vector2(direction * knockBack, 0);
+            yield return new WaitForSeconds(0.5f);
+            Physics2D.IgnoreCollision(gameObject.GetComponent<Collider2D>(), other, false);
+            rb2d.gravityScale = gravity;
+            playerState.damaged = false;
+        }
+        else
+        {
+            yield return null;
+        }
     }
 
     private void GetLastGroundedPosition()

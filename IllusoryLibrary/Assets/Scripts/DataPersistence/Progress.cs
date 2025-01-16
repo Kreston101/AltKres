@@ -16,6 +16,7 @@ public class Progress : MonoBehaviour
     public string progLoadScene;
     public Dictionary<string, bool> progWalls;
     public Dictionary<string, bool> progCollectables;
+    public Dictionary<string, bool> progBossClears;
 
     public static Progress Instance {  get; private set; }
 
@@ -107,7 +108,8 @@ public class Progress : MonoBehaviour
             progLoadScene = gameData.loadScene;
             progWalls = gameData.walls;
             progCollectables = gameData.collectables;
-
+            SceneManager.LoadScene(progLoadScene);
+            
             Debug.Log("save loaded");
         }
         else
