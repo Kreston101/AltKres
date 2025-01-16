@@ -14,7 +14,7 @@ public class Shockwave : MonoBehaviour
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        Destroy(gameObject, 10f);
+        Destroy(gameObject, 5f);
     }
 
     private void FixedUpdate()
