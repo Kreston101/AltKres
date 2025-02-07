@@ -9,6 +9,7 @@ public class GameData
     public Dictionary<string, bool> walls;
     public Dictionary<string, bool> collectables;
     public Dictionary<string, bool> bossClears;
+    public int playerMaxHealth;
 
     //defaults
     public GameData()
@@ -17,6 +18,7 @@ public class GameData
         walls = new Dictionary<string, bool>();
         collectables = new Dictionary<string, bool>();
         bossClears = new Dictionary<string, bool>();
+        playerMaxHealth = 3;
     }
 }
 

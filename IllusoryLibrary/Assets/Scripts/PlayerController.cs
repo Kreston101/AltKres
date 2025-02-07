@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDataPersistence
 {
     public PlayerStates playerState;
     private Rigidbody2D rb2d;
@@ -49,7 +49,6 @@ public class PlayerController : MonoBehaviour
 
     public int health = 3;
     public int maxHealth = 9;
-    public bool tookDamage;
 
     private float gravity;
 
@@ -73,6 +72,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            Debug.Log("new player instance");
             Instance = this;
         }
     }
@@ -100,6 +100,7 @@ public class PlayerController : MonoBehaviour
         if(health <= 0)
         {
             gameObject.SetActive(false);
+            FindObjectOfType<GameManager>().RespawnPlayer();
         }
     }
 
@@ -325,5 +326,17 @@ public class PlayerController : MonoBehaviour
             transform.position = lastGroundedPos;
             Debug.Log(lastGroundedPos);
         }
+    }
+
+    public void LoadData()
+    {
+        maxHealth = Progress.Instance.progPlayerMaxHealth;
+        health = Progress.Instance.progPlayerCurrentHealth;
+    }
+
+    public void SaveData()
+    {
+        Progress.Instance.progPlayerCurrentHealth = health;
+        Progress.Instance.progPlayerMaxHealth = maxHealth;
     }
 }

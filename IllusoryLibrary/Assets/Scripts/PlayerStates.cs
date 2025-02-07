@@ -8,7 +8,9 @@ public class PlayerStates : MonoBehaviour
     public bool dashing = false;
     public bool damaged = false;
 
-    //attatch to items later
+    //check progress obj
+    //if associated item is unlocked, then set value
+    //dont need to make a thing to save this part of the player data
     public bool unlockedDash = false;
     public bool unlockedExtraJump = false;
 }

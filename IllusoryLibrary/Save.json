@@ -1,9 +1,0 @@
-{
-  "loadScene": "BreakRoom",
-  "walls": {
-    "wall1": true,
-    "wall0": false
-  },
-  "collectables": {},
-  "bossClears": {}
-}

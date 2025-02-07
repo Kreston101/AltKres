@@ -17,6 +17,13 @@ public class Progress : MonoBehaviour
     public Dictionary<string, bool> progWalls;
     public Dictionary<string, bool> progCollectables;
     public Dictionary<string, bool> progBossClears;
+    public int progPlayerMaxHealth;
+
+    //player stuff
+    //what needs to be consistent between the player
+    //are we using a player obj already in the scene?
+    //or a non destroyable one?
+    public int progPlayerCurrentHealth;
 
     public static Progress Instance {  get; private set; }
 
@@ -30,10 +37,10 @@ public class Progress : MonoBehaviour
         else
         {
             Instance = this;
+            DontDestroyOnLoad(this);
+            LoadFromFile();
+            playerRef = PlayerController.Instance;
         }
-        DontDestroyOnLoad(this);
-        LoadFromFile();
-        playerRef = PlayerController.Instance;
     }
 
     void OnEnable()
@@ -91,6 +98,8 @@ public class Progress : MonoBehaviour
         gameData.loadScene = progLoadScene; 
         gameData.walls = progWalls; 
         gameData.collectables = progCollectables;
+        gameData.bossClears = progBossClears;
+        gameData.playerMaxHealth = progPlayerMaxHealth;
 
         string jsonString = JsonConvert.SerializeObject(gameData, Formatting.Indented);
         File.WriteAllText("../IllusoryLibrary/Save.json", jsonString);
@@ -108,6 +117,10 @@ public class Progress : MonoBehaviour
             progLoadScene = gameData.loadScene;
             progWalls = gameData.walls;
             progCollectables = gameData.collectables;
+            progBossClears = gameData.bossClears;
+            progPlayerMaxHealth = gameData.playerMaxHealth;
+            progPlayerCurrentHealth = gameData.playerMaxHealth;
+
             SceneManager.LoadScene(progLoadScene);
             
             Debug.Log("save loaded");
@@ -120,9 +133,11 @@ public class Progress : MonoBehaviour
             progLoadScene = gameData.loadScene;
             progWalls = gameData.walls;
             progCollectables = gameData.collectables;
+            progBossClears = gameData.bossClears;
+            progPlayerMaxHealth = gameData.playerMaxHealth;
+            progPlayerCurrentHealth = gameData.playerMaxHealth;
 
             Debug.Log("no save file");
-            Debug.Log(gameData);
         }
     }
 }

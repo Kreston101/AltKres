@@ -15,11 +15,13 @@ public class GameManager : MonoBehaviour
         progressRef = Progress.Instance;
     }
 
-    private void Update()
+    public void RespawnPlayer()
     {
         if(!playerRef.gameObject.activeInHierarchy)
         {
+            playerRef.health = progressRef.progPlayerMaxHealth;
             SceneManager.LoadScene(progressRef.progLoadScene);
+            Debug.Log("player died");
         }
     }
 }
