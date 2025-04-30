@@ -996,26 +996,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1441913953532589720, guid: b45493f071039fb48b1115bccb248cd5, type: 3}
-      propertyPath: damaged
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1441913953532589720, guid: b45493f071039fb48b1115bccb248cd5, type: 3}
-      propertyPath: dashing
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1441913953532589720, guid: b45493f071039fb48b1115bccb248cd5, type: 3}
-      propertyPath: jumping
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1441913953532589720, guid: b45493f071039fb48b1115bccb248cd5, type: 3}
-      propertyPath: unlockedDash
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1441913953532589720, guid: b45493f071039fb48b1115bccb248cd5, type: 3}
-      propertyPath: unlockedExtraJump
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1981485911162554113, guid: b45493f071039fb48b1115bccb248cd5, type: 3}
       propertyPath: m_Name
       value: TestPlayer

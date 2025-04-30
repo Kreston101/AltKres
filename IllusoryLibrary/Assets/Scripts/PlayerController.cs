@@ -52,6 +52,8 @@ public class PlayerController : MonoBehaviour, IDataPersistence
 
     private float gravity;
 
+    [SerializeField] private Animator anim;
+
     public static PlayerController Instance { get; set; }
 
     //RESPAWN SYSTEM
@@ -109,6 +111,11 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
         attacking = Input.GetKeyDown(KeyCode.X);
+        if (horizontal != 0)
+        {
+            anim.SetBool("Movement", true);
+        }
+        else anim.SetBool("Movement", false);
     }
 
     private void Move()
@@ -174,12 +181,14 @@ public class PlayerController : MonoBehaviour, IDataPersistence
             {
                 rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce);
                 playerState.jumping = true;
+                anim.SetBool("Grounded", false);
             }
             else if (!isGrounded() && extraJumps < maxExtraJumps && Input.GetButtonDown("Jump") && playerState.unlockedExtraJump)
             {
                 rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce);
                 playerState.jumping = true;
                 extraJumps++;
+                anim.SetBool("Grounded", false);
             }
         }
         if (Input.GetButtonUp("Jump") && rb2d.velocity.y > 0)
@@ -208,16 +217,19 @@ public class PlayerController : MonoBehaviour, IDataPersistence
             playerState.jumping = false;
             coyoteTimeCounter = coyoteTime;
             extraJumps = 0;
+            anim.SetBool("Grounded", true);
         }
         else
         {
             coyoteTimeCounter -= Time.deltaTime;
+            anim.SetBool("Grounded", false);
         }
 
         if (Input.GetButtonDown("Jump"))
         {
             GetLastGroundedPosition();
             jumpBufferCount = jumpBufferFrames;
+            anim.SetBool("Grounded", false);
         }
         else
         {
@@ -230,6 +242,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         attackCDTimer += Time.deltaTime;
         if (attacking && attackCDTimer >= attackCooldown)
         {
+            anim.SetTrigger("Attack");
             attackCDTimer = 0;
             if (vertical == 0 || vertical < 0 && isGrounded())
             {
