@@ -129,6 +129,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         {
             if (Input.GetKeyDown(KeyCode.LeftShift) && canDash && !dashed)
             {
+                anim.SetBool("Dashing", true);
                 StartCoroutine(Dash());
                 dashed = true;
                 GetLastGroundedPosition();
@@ -149,6 +150,7 @@ public class PlayerController : MonoBehaviour, IDataPersistence
         yield return new WaitForSeconds(dashTime);
         rb2d.gravityScale = gravity;
         playerState.dashing = false;
+        anim.SetBool("Dashing", false);
         yield return new WaitForSeconds(dashCooldown);
         canDash = true;
     }
